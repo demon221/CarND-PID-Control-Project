@@ -3,6 +3,43 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+# Rubric Points
+
+- Describe the effect each of the P, I, D components had in your implementation.
+
+The P, or "proportional", component had the most directly observable effect on the car's behavior. It causes the car to steer proportional (and opposite) to the car's distance from the lane center (which is the CTE) - if the car is far to the right it steers hard to the left, if it's slightly to the left it steers slightly to the right.
+
+The D, or "differential", component counteracts the P component's tendency to ring and overshoot the center line. A properly tuned D parameter will cause the car to approach the center line smoothly without ringing.
+
+The I, or "integral", component counteracts a bias in the CTE which prevents the P-D controller from reaching the center line. This bias can take several forms, such as a steering drift (as in the Control unit lessons), but I believe that in this particular implementation the I component particularly serves to reduce the CTE around curves.
+
+- Describe how the final hyperparameters were chosen.
+
+## Parameter Tuning
+
+- Steer PID control
+
+| Kp  | Ki  | Kd  | Result |
+|:---:|:---:|:---:|:------:|
+|2    |0.01 |  0  | out of track |
+|0.2  |0.001|  0  | out of track |
+|0.2  |0.0005|0.001| out of track |
+|0.2  |0    |0.05 | out of track |    
+|0.1  |0    | 0.2 | out of track |
+|0.1  |0    | 0.5 | out of track |
+|0.1  |0    | 2   | OK w/o speed control|
+|0.1  |0    | 5   | OK w/ speed control|
+
+- Throttle PID control
+
+| Kp  | Ki  | Kd  | Result |
+|:---:|:---:|:---:|:------:|
+|0.1  |0.002| 0   | speed vibration |
+|0.1  |0.002| 2   | speed vibration |
+|0.1  |0.001| 0.1 | OK     |
+
+
+
 ## Dependencies
 
 * cmake >= 3.5
@@ -61,38 +98,4 @@ for instructions and the project rubric.
 
 ## Hints!
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
